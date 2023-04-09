@@ -1,11 +1,33 @@
 
 const User = require('../models/user')
-module.exports.profile = function(req,res){
+module.exports.profile = async function(req,res){
 
-    return res.render('user_profile',{
-        title:'profile'
-    })
-    return res.end('<h1>User profile</h1>');
+   if( req.cookies.user_id){
+
+       try{
+            
+        const data =  await User.findById(req.cookies.user_id);
+        if(data)
+        {
+
+            return res.render('user_profile',{
+                title:"User Profile",
+                user:data
+
+            });
+
+        }
+        return res.redirect('/users/sign-in');
+
+       }catch(err){
+        console.log('error in loading profile',err);
+       }
+       
+   }
+   else
+   {
+       return res.redirect('/users/sign-in');
+   }
 }
 module.exports.posts = function(req,res){
     return res.end('<h1> Posts page </h1>')
@@ -69,6 +91,50 @@ module.exports.create =  async function(req,res){
 
 // sign in and create a session for user
 
-module.exports.createSession = function(req,res){
+module.exports.createSession = async function(req,res){
+     
 
+    // find the user 
+  
+    try{
+
+        const data = await User.findOne({email:req.body.email});
+         // handle user found
+        
+         if(data)
+         {
+              // handle password which dont match
+              if(data.password != req.body.password)
+              { 
+                  console.log(data.password);
+                  console.log("pass not match")
+                  return res.redirect('back');
+              }
+
+                // handle session creation
+
+                res.cookie('user_id', data.id);
+                return res.redirect('/users/profile');
+         }
+         else
+         {
+               return res.redirect('back');
+         }
+
+
+    }catch(err){
+        console.log("error in finding user in signing in",err);
+    }
+   
+
+    
+   
+
+   
+
+  
+
+
+    // handle user not found
+     
 }
