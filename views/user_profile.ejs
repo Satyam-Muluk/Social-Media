@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+<link rel="stylesheet" href="/css/user_profile.css">
+<h1>
+    Codeial / Profile Page
+</h1>
 
-    <!-- this link should get automatically render to head of layout ejs file -->
-    <link rel="stylesheet" href="/css/user_profile.css">
-</head>
-<body>
-    <!-- <header>
-        Page Header
-    </header> -->
-
-    <!-- <%- include('_header');%> -->
-
-
-   <!-- here this is variable part which is kept rest are commented as it is common part -->
-    <h1> Codeal /Profile Page </h1>
-
-    <!-- <footer>
-        Page footer
-    </footer> -->
-
-    <!-- <%- include('_footer');%> -->
-</body>
-</html>
+<p><%= user.name %></p>
+<p><%= user.email %></p>

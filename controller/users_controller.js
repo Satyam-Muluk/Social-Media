@@ -1,9 +1,13 @@
 
 const User = require('../models/user')
-module.exports.profile = function(req,res){
 
+module.exports.profile = function(req,res){
+  
+    // console.log(user.email);
     return res.render('user_profile',{
-        title:'profile'
+        title:'profile',
+        
+        // user:User
     })
     return res.end('<h1>User profile</h1>');
 }
@@ -14,12 +18,21 @@ module.exports.posts = function(req,res){
 
 // render the sign up page
 module.exports.signUp = function(req,res){
+
+    if(req.isAuthenticated()){
+        res.redirect('/users/profile')
+    }
     return res.render('user_sign_up',{
         title:"Codeal | Sign Up"
     });
 }
 
 module.exports.signIn = function(req,res){
+
+    if(req.isAuthenticated()){
+       return res.redirect('/users/profile')
+    }
+
     return res.render('user_sign_in',{
         title:"Codeal | Sign In"
     });
@@ -70,5 +83,18 @@ module.exports.create =  async function(req,res){
 // sign in and create a session for user
 
 module.exports.createSession = function(req,res){
+    
+    return res.redirect('/');
+}
 
+module.exports.destroySession = function(req,res){
+
+    //this function is given to req by passport js
+    req.logout(function(err){
+        if(err)
+        {
+            return next(err);
+        }
+    });
+    return res.redirect('/');
 }
